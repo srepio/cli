@@ -1,7 +1,7 @@
 package common
 
 import (
-	"errors"
+	"fmt"
 
 	"github.com/spf13/cobra"
 	"github.com/srepio/cli/internal/driver/docker"
@@ -33,6 +33,6 @@ func GetDriver(driver string) (types.Driver, error) {
 	case "docker":
 		return docker.NewDockerDriver()
 	default:
-		return nil, errors.New("unknwon driver")
+		return nil, fmt.Errorf("unknwon driver %s", driver)
 	}
 }
