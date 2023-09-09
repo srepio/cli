@@ -4,10 +4,9 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 )
-
-//go:embed metadata.json
-var mdJson string
 
 type Metadata []Scenario
 
@@ -35,6 +34,11 @@ type Volume struct {
 func Get() (*Metadata, error) {
 	md := &Metadata{}
 
+	mdJson, err := getJson()
+	if err != nil {
+		return nil, err
+	}
+
 	if err := json.Unmarshal([]byte(mdJson), md); err != nil {
 		return nil, err
 	}
@@ -55,4 +59,19 @@ func Find(name string) (*Scenario, error) {
 	}
 
 	return nil, fmt.Errorf("unknown senario %s", name)
+}
+
+func getJson() (string, error) {
+	out, err := http.Get("https://raw.githubusercontent.com/srepio/containers/main/metadata.json")
+	if err != nil {
+		return "", err
+	}
+	defer out.Body.Close()
+
+	body, err := ioutil.ReadAll(out.Body)
+	if err != nil {
+		return "", nil
+	}
+
+	return string(body), nil
 }
