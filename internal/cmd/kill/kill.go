@@ -9,11 +9,6 @@ import (
 	"github.com/srepio/cli/internal/metadata"
 )
 
-var (
-	k8s   bool
-	clean bool
-)
-
 func NewKillCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:       "kill [scenario]",
@@ -26,7 +21,7 @@ func NewKillCommand() *cobra.Command {
 				return err
 			}
 
-			d, err := common.GetDriver(k8s)
+			d, err := common.GetDriver(cmd.Flag("driver").Value.String())
 			if err != nil {
 				return err
 			}
@@ -38,8 +33,7 @@ func NewKillCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().BoolVar(&k8s, "k8s", false, "Determine whether to use kubernetes as the driver. Defaults to using docker.")
-	cmd.Flags().BoolVar(&clean, "clean", true, "Determine whether to kill and remove the instance.")
+	common.ScenarioFlags(cmd)
 
 	return cmd
 }

@@ -3,10 +3,15 @@ package common
 import (
 	"errors"
 
+	"github.com/spf13/cobra"
 	"github.com/srepio/cli/internal/driver/docker"
 	"github.com/srepio/cli/internal/metadata"
 	"github.com/srepio/sdk/types"
 )
+
+func ScenarioFlags(cmd *cobra.Command) {
+	cmd.Flags().String("driver", "docker", "Determine which drive to use. Default: docker.")
+}
 
 func ScenarioCompletion() []string {
 	out := []string{}
@@ -23,9 +28,11 @@ func ScenarioCompletion() []string {
 	return out
 }
 
-func GetDriver(k8s bool) (types.Driver, error) {
-	if k8s {
-		return nil, errors.New("k8s driver not implemented yet")
+func GetDriver(driver string) (types.Driver, error) {
+	switch driver {
+	case "docker":
+		return docker.NewDockerDriver()
+	default:
+		return nil, errors.New("unknwon driver")
 	}
-	return docker.NewDockerDriver()
 }

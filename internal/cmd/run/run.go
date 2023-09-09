@@ -11,10 +11,6 @@ import (
 	"github.com/srepio/cli/internal/metadata"
 )
 
-var (
-	k8s bool
-)
-
 func NewRunCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:       "run [scenario]",
@@ -27,7 +23,7 @@ func NewRunCommand() *cobra.Command {
 				return err
 			}
 
-			d, err := common.GetDriver(k8s)
+			d, err := common.GetDriver(cmd.Flag("driver").Value.String())
 			if err != nil {
 				return err
 			}
@@ -47,7 +43,7 @@ func NewRunCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().BoolVar(&k8s, "k8s", false, "Determine whether to use kubernetes as the driver. Defaults to using docker.")
+	common.ScenarioFlags(cmd)
 
 	return cmd
 }

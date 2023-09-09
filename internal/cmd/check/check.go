@@ -12,7 +12,6 @@ import (
 )
 
 var (
-	k8s   bool
 	clean bool
 )
 
@@ -28,7 +27,7 @@ func NewCheckCommand() *cobra.Command {
 				return err
 			}
 
-			d, err := common.GetDriver(k8s)
+			d, err := common.GetDriver(cmd.Flag("driver").Value.String())
 			if err != nil {
 				return err
 			}
@@ -51,8 +50,8 @@ func NewCheckCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().BoolVar(&k8s, "k8s", false, "Determine whether to use kubernetes as the driver. Defaults to using docker.")
 	cmd.Flags().BoolVar(&clean, "clean", true, "Determine whether to kill and remove the instance.")
+	common.ScenarioFlags(cmd)
 
 	return cmd
 }
