@@ -1,0 +1,10 @@
+version: "3"
+
+includes:
+  ct: .taskfiles/container.yaml
+  new: .taskfiles/new.yaml
+
+tasks:
+  metadata:
+    cmds:
+      - ./hack/generate_metadata.py > internal/metadata/metadata.json
