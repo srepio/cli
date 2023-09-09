@@ -1,6 +1,6 @@
 module github.com/srepio/cli
 
-go 1.20
+go 1.21.0
 
 require (
 	github.com/docker/docker v24.0.5+incompatible
@@ -8,6 +8,7 @@ require (
 	github.com/fatih/color v1.15.0
 	github.com/rodaine/table v1.1.0
 	github.com/spf13/cobra v1.7.0
+	github.com/srepio/sdk v0.1.1
 )
 
 require (

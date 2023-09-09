@@ -3,9 +3,9 @@ package common
 import (
 	"errors"
 
-	"github.com/srepio/cli/internal/driver"
 	"github.com/srepio/cli/internal/driver/docker"
 	"github.com/srepio/cli/internal/metadata"
+	"github.com/srepio/sdk/types"
 )
 
 func ScenarioCompletion() []string {
@@ -23,7 +23,7 @@ func ScenarioCompletion() []string {
 	return out
 }
 
-func GetDriver(k8s bool) (driver.Driver, error) {
+func GetDriver(k8s bool) (types.Driver, error) {
 	if k8s {
 		return nil, errors.New("k8s driver not implemented yet")
 	}

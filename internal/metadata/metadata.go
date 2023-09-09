@@ -4,35 +4,14 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
+
+	"github.com/srepio/sdk/types"
 )
 
-type Metadata []Scenario
-
-type Scenario struct {
-	Name        string   `json:"name"`
-	Description string   `json:"description"`
-	Difficulty  string   `json:"difficulty"`
-	Version     string   `json:"version"`
-	Tags        []string `json:"tags"`
-	Ports       []Port   `json:"ports"`
-	Volumes     []Volume `json:"volumes"`
-	Privileged  bool     `json:"privileged"`
-}
-
-type Port struct {
-	Host      string `json:"host"`
-	Container string `json:"container"`
-}
-
-type Volume struct {
-	Host      string `json:"host"`
-	Container string `json:"container"`
-}
-
-func Get() (*Metadata, error) {
-	md := &Metadata{}
+func Get() (*types.Metadata, error) {
+	md := &types.Metadata{}
 
 	mdJson, err := getJson()
 	if err != nil {
@@ -46,7 +25,7 @@ func Get() (*Metadata, error) {
 	return md, nil
 }
 
-func Find(name string) (*Scenario, error) {
+func Find(name string) (*types.Scenario, error) {
 	md, err := Get()
 	if err != nil {
 		return nil, err
@@ -68,7 +47,7 @@ func getJson() (string, error) {
 	}
 	defer out.Body.Close()
 
-	body, err := ioutil.ReadAll(out.Body)
+	body, err := io.ReadAll(out.Body)
 	if err != nil {
 		return "", nil
 	}

@@ -13,7 +13,8 @@ import (
 	"github.com/docker/docker/client"
 	"github.com/docker/go-connections/nat"
 	"github.com/srepio/cli/internal/driver"
-	"github.com/srepio/cli/internal/metadata"
+	srep "github.com/srepio/sdk/types"
+	sd "github.com/srepio/sdk/types/docker"
 )
 
 type Docker struct {
@@ -32,8 +33,8 @@ func NewDockerDriver() (*Docker, error) {
 	return d, nil
 }
 
-func (d *Docker) Create(s metadata.Scenario) (driver.Instance, error) {
-	instance := Container{
+func (d *Docker) Create(s srep.Scenario) (srep.Instance, error) {
+	instance := sd.Container{
 		Name:       s.Name,
 		Image:      fmt.Sprintf("%s%s:%s", driver.ImagePrefix, s.Name, s.Version),
 		Ports:      s.Ports,
@@ -44,8 +45,8 @@ func (d *Docker) Create(s metadata.Scenario) (driver.Instance, error) {
 	return &instance, nil
 }
 
-func (d *Docker) Run(ctx context.Context, i driver.Instance) error {
-	c := i.(*Container)
+func (d *Docker) Run(ctx context.Context, i srep.Instance) error {
+	c := i.(*sd.Container)
 
 	if err := d.pullImage(ctx, c.Image); err != nil {
 		return err
@@ -53,14 +54,14 @@ func (d *Docker) Run(ctx context.Context, i driver.Instance) error {
 	return d.createContainer(ctx, c)
 }
 
-func (d *Docker) ConnectionCommand(i driver.Instance) string {
-	c := i.(*Container)
+func (d *Docker) ConnectionCommand(i srep.Instance) string {
+	c := i.(*sd.Container)
 
 	return fmt.Sprintf("docker exec -it %s bash", c.Name)
 }
 
-func (d *Docker) Kill(ctx context.Context, i driver.Instance) error {
-	c := i.(*Container)
+func (d *Docker) Kill(ctx context.Context, i srep.Instance) error {
+	c := i.(*sd.Container)
 	err := d.client.ContainerStop(ctx, c.Name, container.StopOptions{})
 	if err != nil {
 		return err
@@ -68,8 +69,8 @@ func (d *Docker) Kill(ctx context.Context, i driver.Instance) error {
 	return d.client.ContainerRemove(ctx, c.Name, types.ContainerRemoveOptions{})
 }
 
-func (d *Docker) Check(ctx context.Context, i driver.Instance) bool {
-	c := i.(*Container)
+func (d *Docker) Check(ctx context.Context, i srep.Instance) bool {
+	c := i.(*sd.Container)
 	respID, err := d.client.ContainerExecCreate(ctx, c.Name, types.ExecConfig{
 		Cmd:          []string{"/opt/check.sh"},
 		AttachStdout: true,
@@ -105,7 +106,7 @@ func (d *Docker) pullImage(ctx context.Context, image string) error {
 	return nil
 }
 
-func (d *Docker) createContainer(ctx context.Context, c *Container) error {
+func (d *Docker) createContainer(ctx context.Context, c *sd.Container) error {
 	resp, err := d.client.ContainerCreate(ctx, d.buildContainerConfig(c), d.buildHostConfig(c), nil, nil, c.Name)
 	if err != nil {
 		return err
@@ -115,7 +116,7 @@ func (d *Docker) createContainer(ctx context.Context, c *Container) error {
 	return d.client.ContainerStart(ctx, c.Id, types.ContainerStartOptions{})
 }
 
-func (d *Docker) buildContainerConfig(c *Container) *container.Config {
+func (d *Docker) buildContainerConfig(c *sd.Container) *container.Config {
 	ct := &container.Config{
 		Image: c.Image,
 	}
@@ -129,7 +130,7 @@ func (d *Docker) buildContainerConfig(c *Container) *container.Config {
 	return ct
 }
 
-func (d *Docker) buildHostConfig(c *Container) *container.HostConfig {
+func (d *Docker) buildHostConfig(c *sd.Container) *container.HostConfig {
 	hc := &container.HostConfig{
 		Privileged: c.Privileged,
 	}

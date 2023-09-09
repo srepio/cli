@@ -5,10 +5,10 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/rodaine/table"
-	"github.com/srepio/cli/internal/metadata"
+	"github.com/srepio/sdk/types"
 )
 
-func NewTable(md *metadata.Metadata) table.Table {
+func NewTable(md *types.Metadata) table.Table {
 	headerFmt := color.New(color.FgGreen, color.Underline).SprintfFunc()
 	columnFmt := color.New(color.FgYellow).SprintfFunc()
 
