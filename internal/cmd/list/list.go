@@ -14,7 +14,7 @@ func NewListCommand() *cobra.Command {
 		Use:   "list",
 		Short: "List the available practice scenarios",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			md, err := common.Client().GetMetadata(cmd.Context())
+			md, err := common.Client().Getscenarios(cmd.Context())
 			if err != nil {
 				return err
 			}
