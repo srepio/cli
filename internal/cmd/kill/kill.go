@@ -6,7 +6,6 @@ package kill
 import (
 	"github.com/spf13/cobra"
 	"github.com/srepio/cli/internal/cmd/common"
-	"github.com/srepio/cli/internal/metadata"
 )
 
 func NewKillCommand() *cobra.Command {
@@ -16,7 +15,7 @@ func NewKillCommand() *cobra.Command {
 		Args:      cobra.ExactArgs(1),
 		ValidArgs: common.ScenarioCompletion(),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			s, err := metadata.Find(args[0])
+			s, err := common.Client().FindScenario(cmd.Context(), args[0])
 			if err != nil {
 				return err
 			}
@@ -25,7 +24,7 @@ func NewKillCommand() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			instance, err := d.Create(*s)
+			instance, err := d.Create(*s.Scenario)
 			if err != nil {
 				return err
 			}

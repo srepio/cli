@@ -8,7 +8,6 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/srepio/cli/internal/cmd/common"
-	"github.com/srepio/cli/internal/metadata"
 )
 
 func NewDescribeCommand() *cobra.Command {
@@ -18,19 +17,19 @@ func NewDescribeCommand() *cobra.Command {
 		Args:      cobra.ExactArgs(1),
 		ValidArgs: common.ScenarioCompletion(),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			s, err := metadata.Find(args[0])
+			s, err := common.Client().FindScenario(cmd.Context(), args[0])
 			if err != nil {
 				return err
 			}
 
-			fmt.Printf("Scenario: %s\n", s.Name)
-			fmt.Printf("Difficulty: %s\n", s.Difficulty)
+			fmt.Printf("Scenario: %s\n", s.Scenario.Name)
+			fmt.Printf("Difficulty: %s\n", s.Scenario.Difficulty)
 			fmt.Println("Tags:")
-			for _, tag := range s.Tags {
+			for _, tag := range s.Scenario.Tags {
 				fmt.Printf("  - %s\n", tag)
 			}
 			fmt.Printf("\nDescription:\n")
-			fmt.Println(s.Description)
+			fmt.Println(s.Scenario.Description)
 
 			return nil
 		},
