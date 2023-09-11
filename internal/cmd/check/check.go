@@ -11,10 +11,6 @@ import (
 	"github.com/srepio/sdk/client"
 )
 
-var (
-	clean bool
-)
-
 func NewCheckCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:       "check [scenario]",
