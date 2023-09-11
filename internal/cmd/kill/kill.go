@@ -24,11 +24,13 @@ func NewKillCommand() *cobra.Command {
 			if err != nil {
 				return err
 			}
+
 			instance, err := d.Create(*s.Scenario)
 			if err != nil {
 				return err
 			}
-			return d.Kill(cmd.Context(), instance)
+			_, err = d.Kill(cmd.Context(), instance)
+			return err
 		},
 	}
 

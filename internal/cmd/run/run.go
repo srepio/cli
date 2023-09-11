@@ -8,6 +8,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/srepio/cli/internal/cmd/common"
+	"github.com/srepio/sdk/client"
 )
 
 func NewRunCommand() *cobra.Command {
@@ -30,7 +31,19 @@ func NewRunCommand() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			if err := d.Run(cmd.Context(), instance); err != nil {
+
+			play, err := common.Client().StartPlay(cmd.Context(), &client.StartPlayRequest{
+				Scenario: args[0],
+				Driver:   cmd.Flag("driver").Value.String(),
+			})
+			if err != nil {
+				return err
+			}
+
+			if err := d.Run(cmd.Context(), instance, play.ID); err != nil {
+				return err
+			}
+			if err := d.Run(cmd.Context(), instance, play.ID); err != nil {
 				return err
 			}
 

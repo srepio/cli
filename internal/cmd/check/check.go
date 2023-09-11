@@ -8,6 +8,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/srepio/cli/internal/cmd/common"
+	"github.com/srepio/sdk/client"
 )
 
 var (
@@ -37,10 +38,13 @@ func NewCheckCommand() *cobra.Command {
 
 			if d.Check(cmd.Context(), instance) {
 				fmt.Println("The check script passed!")
-				if clean {
-					return d.Kill(cmd.Context(), instance)
+				play, err := d.Kill(cmd.Context(), instance)
+				if err != nil {
+					return err
 				}
-				return nil
+				if _, err := common.Client().CompletePlay(cmd.Context(), &client.CompletePlayRequest{ID: play}); err != nil {
+					return err
+				}
 			}
 
 			fmt.Println("The check script failed, try again")
@@ -49,7 +53,6 @@ func NewCheckCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().BoolVar(&clean, "clean", true, "Determine whether to kill and remove the instance.")
 	common.ScenarioFlags(cmd)
 
 	return cmd
