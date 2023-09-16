@@ -32,9 +32,9 @@ func ScenarioCompletion() []string {
 	return out
 }
 
-func GetDriver(driver string) (types.Driver, error) {
+func GetDriver(driver types.DriverName) (types.Driver, error) {
 	switch driver {
-	case "docker":
+	case types.DockerDriver:
 		return docker.NewDockerDriver()
 	default:
 		return nil, fmt.Errorf("unknwon driver %s", driver)

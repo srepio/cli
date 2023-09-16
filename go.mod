@@ -8,7 +8,7 @@ require (
 	github.com/fatih/color v1.15.0
 	github.com/rodaine/table v1.1.0
 	github.com/spf13/cobra v1.7.0
-	github.com/srepio/sdk v0.1.22
+	github.com/srepio/sdk v0.1.27
 )
 
 require (

@@ -5,7 +5,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"strconv"
 	"strings"
 
 	"github.com/docker/docker/api/types"
@@ -46,7 +45,7 @@ func (d *Docker) Create(s srep.Scenario) (srep.Instance, error) {
 	return &instance, nil
 }
 
-func (d *Docker) Run(ctx context.Context, i srep.Instance, id int64) error {
+func (d *Docker) Run(ctx context.Context, i srep.Instance, id string) error {
 	c := i.(*sd.Container)
 
 	if err := d.pullImage(ctx, c.Image); err != nil {
@@ -61,16 +60,16 @@ func (d *Docker) ConnectionCommand(i srep.Instance) string {
 	return fmt.Sprintf("docker exec -it %s bash", c.Name)
 }
 
-func (d *Docker) Kill(ctx context.Context, i srep.Instance) (int64, error) {
+func (d *Docker) Kill(ctx context.Context, i srep.Instance) (string, error) {
 	c := i.(*sd.Container)
 
 	play, err := d.getIdFromContainer(ctx, c.Name)
 	if err != nil {
-		return 0, err
+		return "", err
 	}
 
 	if err := d.client.ContainerStop(ctx, c.Name, container.StopOptions{}); err != nil {
-		return 0, err
+		return "", err
 	}
 	return play, d.client.ContainerRemove(ctx, c.Name, types.ContainerRemoveOptions{})
 }
@@ -112,7 +111,7 @@ func (d *Docker) pullImage(ctx context.Context, image string) error {
 	return nil
 }
 
-func (d *Docker) createContainer(ctx context.Context, c *sd.Container, play int64) error {
+func (d *Docker) createContainer(ctx context.Context, c *sd.Container, play string) error {
 	resp, err := d.client.ContainerCreate(ctx, d.buildContainerConfig(c, play), d.buildHostConfig(c), nil, nil, c.Name)
 	if err != nil {
 		return err
@@ -122,7 +121,7 @@ func (d *Docker) createContainer(ctx context.Context, c *sd.Container, play int6
 	return d.client.ContainerStart(ctx, c.Id, types.ContainerStartOptions{})
 }
 
-func (d *Docker) buildContainerConfig(c *sd.Container, play int64) *container.Config {
+func (d *Docker) buildContainerConfig(c *sd.Container, play string) *container.Config {
 	ct := &container.Config{
 		Image: c.Image,
 		Labels: map[string]string{
@@ -170,14 +169,10 @@ func (d *Docker) buildHostConfig(c *sd.Container) *container.HostConfig {
 	return hc
 }
 
-func (d *Docker) getIdFromContainer(ctx context.Context, name string) (int64, error) {
+func (d *Docker) getIdFromContainer(ctx context.Context, name string) (string, error) {
 	c, err := d.client.ContainerInspect(ctx, name)
 	if err != nil {
-		return 0, err
+		return "", err
 	}
-	id, err := strconv.Atoi(c.Config.Labels["srep-play-id"])
-	if err != nil {
-		return 0, err
-	}
-	return int64(id), nil
+	return c.Config.Labels["srep-play-id"], nil
 }

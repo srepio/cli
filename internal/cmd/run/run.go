@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/srepio/cli/internal/cmd/common"
 	"github.com/srepio/sdk/client"
+	"github.com/srepio/sdk/types"
 )
 
 func NewRunCommand() *cobra.Command {
@@ -23,7 +24,7 @@ func NewRunCommand() *cobra.Command {
 				return err
 			}
 
-			d, err := common.GetDriver(cmd.Flag("driver").Value.String())
+			d, err := common.GetDriver(types.DriverName(cmd.Flag("driver").Value.String()))
 			if err != nil {
 				return err
 			}

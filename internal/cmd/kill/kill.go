@@ -6,6 +6,8 @@ package kill
 import (
 	"github.com/spf13/cobra"
 	"github.com/srepio/cli/internal/cmd/common"
+	"github.com/srepio/sdk/client"
+	"github.com/srepio/sdk/types"
 )
 
 func NewKillCommand() *cobra.Command {
@@ -20,7 +22,7 @@ func NewKillCommand() *cobra.Command {
 				return err
 			}
 
-			d, err := common.GetDriver(cmd.Flag("driver").Value.String())
+			d, err := common.GetDriver(types.DriverName(cmd.Flag("driver").Value.String()))
 			if err != nil {
 				return err
 			}
@@ -29,8 +31,16 @@ func NewKillCommand() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			_, err = d.Kill(cmd.Context(), instance)
-			return err
+			play, err := d.Kill(cmd.Context(), instance)
+			if err != nil {
+				return err
+			}
+
+			if _, err := common.Client().FailPlay(cmd.Context(), &client.FailedPlayRequest{ID: play}); err != nil {
+				return err
+			}
+
+			return nil
 		},
 	}
 
