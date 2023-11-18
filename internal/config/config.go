@@ -12,7 +12,18 @@ import (
 var (
 	ErrInvalidConnection = errors.New("config error: invalid current connection")
 	ErrNoConfig          = errors.New("config error: config file not found")
+
+	DefaultPath string
 )
+
+func init() {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		DefaultPath = ".srep.yaml"
+	} else {
+		DefaultPath = fmt.Sprintf("%s/.srep.yaml", home)
+	}
+}
 
 type Config struct {
 	DefaultDriver     types.DriverName `yaml:"default_driver"`
@@ -29,15 +40,7 @@ type Api struct {
 // Load the config from ~/.srep.yaml or from the value of SREP_CONFIG
 // Fails if the file doesn't exist
 func GetConfig() (*Config, error) {
-	home, err := os.UserHomeDir()
-	if err != nil {
-		return nil, err
-	}
-	filePath := fmt.Sprintf("%s/.srep.yaml", home)
-
-	if _, ok := os.LookupEnv("SREP_CONFIG"); ok {
-		filePath = os.Getenv("SREP_CONFIG")
-	}
+	filePath := getPath()
 
 	data, err := os.ReadFile(filePath)
 	if err != nil {
@@ -57,6 +60,40 @@ func GetConfig() (*Config, error) {
 		return nil, err
 	}
 	return config, nil
+}
+
+func getPath() string {
+	filePath := DefaultPath
+	if _, ok := os.LookupEnv("SREP_CONFIG"); ok {
+		filePath = os.Getenv("SREP_CONFIG")
+	}
+	return filePath
+}
+
+func Initialise() error {
+	filePath := getPath()
+
+	c := &Config{
+		DefaultDriver: types.DockerDriver,
+		Connections: []Api{
+			{
+				Name:  "default",
+				Url:   "https://api.srep.io",
+				Token: "",
+			},
+		},
+		CurrentConnection: "default",
+	}
+
+	b, err := yaml.Marshal(c)
+	if err != nil {
+		return err
+	}
+
+	if err := os.WriteFile(filePath, b, 0600); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *Config) validate() error {

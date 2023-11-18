@@ -11,6 +11,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/srepio/cli/internal/cmd/check"
 	"github.com/srepio/cli/internal/cmd/describe"
+	"github.com/srepio/cli/internal/cmd/initialise"
 	"github.com/srepio/cli/internal/cmd/kill"
 	"github.com/srepio/cli/internal/cmd/list"
 	"github.com/srepio/cli/internal/cmd/run"
@@ -51,6 +52,7 @@ func BuildRootCmd(version, commit, date string) *cobra.Command {
 	cmd.AddCommand(check.NewCheckCommand())
 	cmd.AddCommand(describe.NewDescribeCommand())
 	cmd.AddCommand(kill.NewKillCommand())
+	cmd.AddCommand(initialise.NewInitCommand())
 
 	return cmd
 }

@@ -1,6 +1,8 @@
 package config
 
 import (
+	"fmt"
+	"os"
 	"path/filepath"
 	"testing"
 
@@ -48,4 +50,18 @@ func TestItFailsWhenNoConfigFileExists(t *testing.T) {
 	t.Setenv("SREP_CONFIG", "/tmp/bongo.yaml")
 	_, err := GetConfig()
 	assert.ErrorIs(t, err, ErrNoConfig)
+}
+
+func TestItCreatesANewDefaultConfig(t *testing.T) {
+	dir := t.TempDir()
+	t.Setenv("SREP_CONFIG", fmt.Sprintf("%s/.srep.yaml", dir))
+
+	_, err := os.Stat(fmt.Sprintf("%s/.srep.yaml", dir))
+	assert.Error(t, err)
+
+	err = Initialise()
+	assert.Nil(t, err)
+
+	_, err = os.Stat(fmt.Sprintf("%s/.srep.yaml", dir))
+	assert.Nil(t, err)
 }
