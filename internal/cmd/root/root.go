@@ -4,7 +4,9 @@ Copyright © 2023 Henry Whitaker <henrywhitaker3@outlook.com>
 package root
 
 import (
+	"errors"
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 	"github.com/srepio/cli/internal/cmd/check"
@@ -12,6 +14,11 @@ import (
 	"github.com/srepio/cli/internal/cmd/kill"
 	"github.com/srepio/cli/internal/cmd/list"
 	"github.com/srepio/cli/internal/cmd/run"
+	"github.com/srepio/cli/internal/config"
+)
+
+var (
+	Config *config.Config
 )
 
 func BuildRootCmd(version, commit, date string) *cobra.Command {
@@ -20,6 +27,18 @@ func BuildRootCmd(version, commit, date string) *cobra.Command {
 		Short:   "SRE practice",
 		Long:    `A CLI that runs SRE practice scenarios`,
 		Version: version,
+		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+			c, err := config.GetConfig()
+			if err != nil {
+				if errors.Is(err, config.ErrNoConfig) {
+					fmt.Printf("Config file not found.\nRun `srep init` to generate a new config\n")
+					os.Exit(0)
+				}
+				return err
+			}
+			Config = c
+			return nil
+		},
 		// Uncomment the following line if your bare application
 		// has an action associated with it:
 		// Run: func(cmd *cobra.Command, args []string) { },

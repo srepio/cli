@@ -11,6 +11,7 @@ import (
 
 var (
 	ErrInvalidConnection = errors.New("config error: invalid current connection")
+	ErrNoConfig          = errors.New("config error: config file not found")
 )
 
 type Config struct {
@@ -40,6 +41,9 @@ func GetConfig() (*Config, error) {
 
 	data, err := os.ReadFile(filePath)
 	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			return nil, ErrNoConfig
+		}
 		return nil, err
 	}
 

@@ -1,7 +1,6 @@
 package config
 
 import (
-	"os"
 	"path/filepath"
 	"testing"
 
@@ -48,5 +47,5 @@ func TestItLoadsAFileWhenEnvVarIsSet(t *testing.T) {
 func TestItFailsWhenNoConfigFileExists(t *testing.T) {
 	t.Setenv("SREP_CONFIG", "/tmp/bongo.yaml")
 	_, err := GetConfig()
-	assert.ErrorIs(t, err, os.ErrNotExist)
+	assert.ErrorIs(t, err, ErrNoConfig)
 }
