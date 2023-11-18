@@ -25,6 +25,8 @@ type Api struct {
 	Token string `yaml:"token"`
 }
 
+// Load the config from ~/.srep.yaml or from the value of SREP_CONFIG
+// Fails if the file doesn't exist
 func GetConfig() (*Config, error) {
 	home, err := os.UserHomeDir()
 	if err != nil {
