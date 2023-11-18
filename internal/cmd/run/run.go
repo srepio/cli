@@ -44,9 +44,6 @@ func NewRunCommand() *cobra.Command {
 			if err := d.Run(cmd.Context(), instance, play.ID); err != nil {
 				return err
 			}
-			if err := d.Run(cmd.Context(), instance, play.ID); err != nil {
-				return err
-			}
 
 			fmt.Printf("To connect to the instance, run the following command:\n\n")
 			fmt.Println(d.ConnectionCommand(instance))
