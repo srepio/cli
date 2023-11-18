@@ -1,8 +1,10 @@
 package config
 
 import (
+	"path/filepath"
 	"testing"
 
+	"github.com/srepio/sdk/types"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -27,4 +29,17 @@ func TestItDoesntErrorForValidConnections(t *testing.T) {
 	err := c.validate()
 
 	assert.Nil(t, err)
+}
+
+func TestItLoadsAFileWhenEnvVarIsSet(t *testing.T) {
+	path, err := filepath.Abs("testdata/.srep-valid.yaml")
+	assert.Nil(t, err)
+	t.Setenv("SREP_CONFIG", path)
+
+	c, err := GetConfig()
+
+	assert.Nil(t, err)
+
+	assert.Equal(t, types.DriverName("docker"), c.DefaultDriver)
+	assert.Equal(t, "default", c.CurrentConnection)
 }

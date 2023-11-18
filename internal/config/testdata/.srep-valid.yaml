@@ -1,0 +1,8 @@
+default_driver: docker
+
+connections:
+  - name: default
+    url: https://api.srep.io
+    token: bongo
+
+current_connection: default
