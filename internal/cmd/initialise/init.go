@@ -10,8 +10,9 @@ import (
 
 func NewInitCommand() *cobra.Command {
 	return &cobra.Command{
-		Use:   "init",
-		Short: "Initialise the config",
+		Use:     "init",
+		Short:   "Initialise the config",
+		GroupID: "other",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			return nil
 		},

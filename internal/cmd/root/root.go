@@ -47,6 +47,12 @@ func BuildRootCmd(version, commit, date string) *cobra.Command {
 
 	cmd.SetVersionTemplate(fmt.Sprintf("%s version %s commit %s built at %s\n", cmd.Use, version, commit, date))
 
+	cmd.AddGroup(&cobra.Group{ID: "srep", Title: "SREP commands:"})
+	cmd.AddGroup(&cobra.Group{ID: "other", Title: "Other commands:"})
+
+	cmd.SetHelpCommandGroupID("other")
+	cmd.SetCompletionCommandGroupID("other")
+
 	cmd.AddCommand(list.NewListCommand())
 	cmd.AddCommand(run.NewRunCommand())
 	cmd.AddCommand(check.NewCheckCommand())
