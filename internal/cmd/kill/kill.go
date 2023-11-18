@@ -14,6 +14,7 @@ func NewKillCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:       "kill [scenario]",
 		Short:     "Kill the specified practice scenario",
+		GroupID:   "srep",
 		Args:      cobra.ExactArgs(1),
 		ValidArgs: common.ScenarioCompletion(),
 		RunE: func(cmd *cobra.Command, args []string) error {

@@ -16,6 +16,7 @@ func NewCheckCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:       "check [scenario]",
 		Short:     "Check the specified practice scenario",
+		GroupID:   "srep",
 		Args:      cobra.ExactArgs(1),
 		ValidArgs: common.ScenarioCompletion(),
 		RunE: func(cmd *cobra.Command, args []string) error {

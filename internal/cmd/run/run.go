@@ -16,6 +16,7 @@ func NewRunCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:       "run [scenario]",
 		Short:     "Run the specified practice scenarios",
+		GroupID:   "srep",
 		Args:      cobra.ExactArgs(1),
 		ValidArgs: common.ScenarioCompletion(),
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -41,9 +42,6 @@ func NewRunCommand() *cobra.Command {
 				return err
 			}
 
-			if err := d.Run(cmd.Context(), instance, play.ID); err != nil {
-				return err
-			}
 			if err := d.Run(cmd.Context(), instance, play.ID); err != nil {
 				return err
 			}
