@@ -4,7 +4,7 @@ go 1.21.0
 
 require (
 	github.com/docker/docker v24.0.6+incompatible
-	github.com/docker/go-connections v0.4.0
+	github.com/docker/go-connections v0.5.0
 	github.com/fatih/color v1.15.0
 	github.com/rodaine/table v1.1.0
 	github.com/spf13/cobra v1.7.0
