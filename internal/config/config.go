@@ -30,9 +30,10 @@ type Config struct {
 }
 
 type Api struct {
-	Name  string `yaml:"name"`
-	Url   string `yaml:"api_url"`
-	Token string `yaml:"token"`
+	Name   string `yaml:"name"`
+	Url    string `yaml:"api_url"`
+	Token  string `yaml:"token"`
+	Scheme string `yaml:"scheme"`
 }
 
 // Load the config from ~/.srep.yaml or from the value of SREP_CONFIG
@@ -74,9 +75,10 @@ func Initialise() error {
 	c := &Config{
 		Connections: []Api{
 			{
-				Name:  "default",
-				Url:   "https://api.srep.io",
-				Token: "",
+				Name:   "default",
+				Url:    "api.srep.io",
+				Scheme: "https",
+				Token:  "",
 			},
 		},
 		CurrentConnection: "default",

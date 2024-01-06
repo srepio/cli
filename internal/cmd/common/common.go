@@ -34,8 +34,9 @@ func InitClient(config *config.Config) {
 	conn := config.GetCurrentConnection()
 
 	srep = client.NewClient(&client.ClientOptions{
-		Url:   conn.Url,
-		Token: conn.Token,
+		Url:    conn.Url,
+		Token:  conn.Token,
+		Scheme: conn.Scheme,
 	})
 }
 
