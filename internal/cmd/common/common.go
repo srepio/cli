@@ -2,12 +2,10 @@ package common
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/srepio/cli/internal/driver/docker"
+	"github.com/srepio/cli/internal/config"
 	"github.com/srepio/sdk/client"
-	"github.com/srepio/sdk/types"
 )
 
 var (
@@ -32,13 +30,13 @@ func ScenarioCompletion() []string {
 	return out
 }
 
-func GetDriver(driver types.DriverName) (types.Driver, error) {
-	switch driver {
-	case types.DockerDriver:
-		return docker.NewDockerDriver()
-	default:
-		return nil, fmt.Errorf("unknwon driver %s", driver)
-	}
+func InitClient(config *config.Config) {
+	conn := config.GetCurrentConnection()
+
+	srep = client.NewClient(&client.ClientOptions{
+		Url:   conn.Url,
+		Token: conn.Token,
+	})
 }
 
 func Client() *client.Client {

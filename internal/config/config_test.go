@@ -6,7 +6,6 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/srepio/sdk/types"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -42,7 +41,6 @@ func TestItLoadsAFileWhenEnvVarIsSet(t *testing.T) {
 
 	assert.Nil(t, err)
 
-	assert.Equal(t, types.DriverName("docker"), c.DefaultDriver)
 	assert.Equal(t, "default", c.CurrentConnection)
 }
 

@@ -9,10 +9,11 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/srepio/cli/internal/cmd/cancel"
 	"github.com/srepio/cli/internal/cmd/check"
+	"github.com/srepio/cli/internal/cmd/common"
 	"github.com/srepio/cli/internal/cmd/describe"
 	"github.com/srepio/cli/internal/cmd/initialise"
-	"github.com/srepio/cli/internal/cmd/kill"
 	"github.com/srepio/cli/internal/cmd/list"
 	"github.com/srepio/cli/internal/cmd/run"
 	"github.com/srepio/cli/internal/config"
@@ -38,6 +39,7 @@ func BuildRootCmd(version, commit, date string) *cobra.Command {
 				return err
 			}
 			Config = c
+			common.InitClient(c)
 			return nil
 		},
 		// Uncomment the following line if your bare application
@@ -57,7 +59,7 @@ func BuildRootCmd(version, commit, date string) *cobra.Command {
 	cmd.AddCommand(run.NewRunCommand())
 	cmd.AddCommand(check.NewCheckCommand())
 	cmd.AddCommand(describe.NewDescribeCommand())
-	cmd.AddCommand(kill.NewKillCommand())
+	cmd.AddCommand(cancel.NewCancelCommand())
 	cmd.AddCommand(initialise.NewInitCommand())
 
 	return cmd

@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/srepio/cli/internal/cmd/common"
 	"github.com/srepio/sdk/client"
-	"github.com/srepio/sdk/types"
 )
 
 func NewRunCommand() *cobra.Command {
@@ -25,30 +24,14 @@ func NewRunCommand() *cobra.Command {
 				return err
 			}
 
-			d, err := common.GetDriver(types.DriverName(cmd.Flag("driver").Value.String()))
-			if err != nil {
-				return err
-			}
-			instance, err := d.Create(*s.Scenario)
-			if err != nil {
-				return err
-			}
-
 			play, err := common.Client().StartPlay(cmd.Context(), &client.StartPlayRequest{
-				Scenario: args[0],
-				Driver:   cmd.Flag("driver").Value.String(),
+				Scenario: s.Scenario.Name,
 			})
 			if err != nil {
 				return err
 			}
 
-			if err := d.Run(cmd.Context(), instance, play.ID); err != nil {
-				return err
-			}
-
-			fmt.Printf("To connect to the instance, run the following command:\n\n")
-			fmt.Println(d.ConnectionCommand(instance))
-			fmt.Printf("\nWhen you have finished, you can run `srep check %s` to check your work\n", args[0])
+			fmt.Println(play)
 
 			return nil
 		},
