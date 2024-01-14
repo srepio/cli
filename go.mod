@@ -5,7 +5,7 @@ go 1.21.0
 require (
 	github.com/fatih/color v1.15.0
 	github.com/rodaine/table v1.1.0
-	github.com/spf13/cobra v1.7.0
+	github.com/spf13/cobra v1.8.0
 	github.com/srepio/sdk v0.1.52
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/term v0.16.0
