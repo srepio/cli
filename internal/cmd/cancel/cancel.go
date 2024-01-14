@@ -1,7 +1,7 @@
 /*
 Copyright © 2023 Henry Whitaker <henrywhitaker3@outlook.com>
 */
-package check
+package cancel
 
 import (
 	"fmt"
@@ -11,10 +11,10 @@ import (
 	"github.com/srepio/sdk/client"
 )
 
-func NewCheckCommand() *cobra.Command {
+func NewCancelCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "check",
-		Short:   "Check the active scenario",
+		Use:     "cancel",
+		Short:   "Cancel the active play",
 		GroupID: "srep",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			active, err := common.Client().GetActivePlay(cmd.Context(), &client.GetActivePlayRequest{})
@@ -22,18 +22,16 @@ func NewCheckCommand() *cobra.Command {
 				return err
 			}
 
-			out, err := common.Client().CheckPlay(cmd.Context(), &client.CheckPlayRequest{ID: active.Play.ID})
-			if err != nil {
-				return err
+			if active.Play == nil {
+				fmt.Println("No active play")
+				return nil
 			}
 
-			if out.Passed {
-				fmt.Println("Play passed!")
-			} else {
-				fmt.Println("The check script failed, try again")
-			}
+			_, err = common.Client().CancelPlay(cmd.Context(), &client.CancelPlayRequest{
+				ID: active.Play.ID,
+			})
 
-			return nil
+			return err
 		},
 	}
 

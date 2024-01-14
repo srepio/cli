@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/srepio/sdk/types"
 	"gopkg.in/yaml.v3"
 )
 
@@ -26,15 +25,15 @@ func init() {
 }
 
 type Config struct {
-	DefaultDriver     types.DriverName `yaml:"default_driver"`
-	Connections       []Api            `yaml:"connections"`
-	CurrentConnection string           `yaml:"current_connection"`
+	Connections       []Api  `yaml:"connections"`
+	CurrentConnection string `yaml:"current_connection"`
 }
 
 type Api struct {
-	Name  string `yaml:"name"`
-	Url   string `yaml:"api_url"`
-	Token string `yaml:"token"`
+	Name   string `yaml:"name"`
+	Url    string `yaml:"api_url"`
+	Token  string `yaml:"token"`
+	Scheme string `yaml:"scheme"`
 }
 
 // Load the config from ~/.srep.yaml or from the value of SREP_CONFIG
@@ -74,12 +73,12 @@ func Initialise() error {
 	filePath := getPath()
 
 	c := &Config{
-		DefaultDriver: types.DockerDriver,
 		Connections: []Api{
 			{
-				Name:  "default",
-				Url:   "https://api.srep.io",
-				Token: "",
+				Name:   "default",
+				Url:    "api.srep.io",
+				Scheme: "https",
+				Token:  "",
 			},
 		},
 		CurrentConnection: "default",
@@ -109,4 +108,13 @@ func (c *Config) validate() error {
 	}
 
 	return nil
+}
+
+func (c *Config) GetCurrentConnection() Api {
+	for _, conn := range c.Connections {
+		if conn.Name == c.CurrentConnection {
+			return conn
+		}
+	}
+	return Api{}
 }

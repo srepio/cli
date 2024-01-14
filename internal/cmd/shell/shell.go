@@ -1,20 +1,20 @@
 /*
 Copyright © 2023 Henry Whitaker <henrywhitaker3@outlook.com>
 */
-package check
+package shell
 
 import (
-	"fmt"
+	"errors"
 
 	"github.com/spf13/cobra"
 	"github.com/srepio/cli/internal/cmd/common"
 	"github.com/srepio/sdk/client"
 )
 
-func NewCheckCommand() *cobra.Command {
+func NewShellCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "check",
-		Short:   "Check the active scenario",
+		Use:     "shell [scenario]",
+		Short:   "Get a shell in the active play",
 		GroupID: "srep",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			active, err := common.Client().GetActivePlay(cmd.Context(), &client.GetActivePlayRequest{})
@@ -22,18 +22,11 @@ func NewCheckCommand() *cobra.Command {
 				return err
 			}
 
-			out, err := common.Client().CheckPlay(cmd.Context(), &client.CheckPlayRequest{ID: active.Play.ID})
-			if err != nil {
-				return err
+			if active.Play == nil {
+				return errors.New("no active play running")
 			}
 
-			if out.Passed {
-				fmt.Println("Play passed!")
-			} else {
-				fmt.Println("The check script failed, try again")
-			}
-
-			return nil
+			return common.RunShell(active.Play.ID)
 		},
 	}
 
