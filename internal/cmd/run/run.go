@@ -14,7 +14,7 @@ import (
 func NewRunCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:       "run [scenario]",
-		Short:     "Run the specified practice scenarios",
+		Short:     "Start a new play",
 		GroupID:   "srep",
 		Args:      cobra.ExactArgs(1),
 		ValidArgs: common.ScenarioCompletion(),
