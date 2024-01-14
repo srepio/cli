@@ -16,6 +16,7 @@ import (
 	"github.com/srepio/cli/internal/cmd/initialise"
 	"github.com/srepio/cli/internal/cmd/list"
 	"github.com/srepio/cli/internal/cmd/run"
+	"github.com/srepio/cli/internal/cmd/shell"
 	"github.com/srepio/cli/internal/config"
 )
 
@@ -42,9 +43,6 @@ func BuildRootCmd(version, commit, date string) *cobra.Command {
 			common.InitClient(c)
 			return nil
 		},
-		// Uncomment the following line if your bare application
-		// has an action associated with it:
-		// Run: func(cmd *cobra.Command, args []string) { },
 	}
 
 	cmd.SetVersionTemplate(fmt.Sprintf("%s version %s commit %s built at %s\n", cmd.Use, version, commit, date))
@@ -61,6 +59,7 @@ func BuildRootCmd(version, commit, date string) *cobra.Command {
 	cmd.AddCommand(describe.NewDescribeCommand())
 	cmd.AddCommand(cancel.NewCancelCommand())
 	cmd.AddCommand(initialise.NewInitCommand())
+	cmd.AddCommand(shell.NewShellCommand())
 
 	return cmd
 }
