@@ -31,7 +31,7 @@ func NewRunCommand() *cobra.Command {
 				return nil
 			}
 
-			s, err := common.Client().FindScenario(cmd.Context(), args[0])
+			s, err := common.Client().FindScenario(cmd.Context(), &client.FindScenarioRequest{Scenario: args[0]})
 			if err != nil {
 				return err
 			}

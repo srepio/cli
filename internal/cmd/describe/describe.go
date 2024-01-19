@@ -8,6 +8,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/srepio/cli/internal/cmd/common"
+	"github.com/srepio/sdk/client"
 )
 
 func NewDescribeCommand() *cobra.Command {
@@ -18,7 +19,7 @@ func NewDescribeCommand() *cobra.Command {
 		Args:      cobra.ExactArgs(1),
 		ValidArgs: common.ScenarioCompletion(),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			s, err := common.Client().FindScenario(cmd.Context(), args[0])
+			s, err := common.Client().FindScenario(cmd.Context(), &client.FindScenarioRequest{Scenario: args[0]})
 			if err != nil {
 				return err
 			}
