@@ -6,7 +6,7 @@ require (
 	github.com/fatih/color v1.16.0
 	github.com/rodaine/table v1.1.0
 	github.com/spf13/cobra v1.8.0
-	github.com/srepio/sdk v0.1.53
+	github.com/srepio/sdk v0.1.60
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/term v0.16.0
 	gopkg.in/yaml.v3 v3.0.1

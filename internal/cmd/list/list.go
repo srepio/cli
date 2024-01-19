@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/srepio/cli/internal/cmd/common"
 	"github.com/srepio/cli/internal/views/list"
+	"github.com/srepio/sdk/client"
 )
 
 func NewListCommand() *cobra.Command {
@@ -15,7 +16,7 @@ func NewListCommand() *cobra.Command {
 		Short:   "List the available practice scenarios",
 		GroupID: "srep",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			md, err := common.Client().Getscenarios(cmd.Context())
+			md, err := common.Client().GetScenarios(cmd.Context(), &client.GetScenariosRequest{})
 			if err != nil {
 				return err
 			}

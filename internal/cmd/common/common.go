@@ -18,7 +18,7 @@ func ScenarioFlags(cmd *cobra.Command) {
 
 func ScenarioCompletion() []string {
 	out := []string{}
-	s, err := Client().Getscenarios(context.Background())
+	s, err := Client().GetScenarios(context.Background(), &client.GetScenariosRequest{})
 	if err != nil {
 		return out
 	}
