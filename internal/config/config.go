@@ -124,7 +124,7 @@ func (c *Config) SetConnection(conn Api) error {
 	for i := range c.Connections {
 		if c.Connections[i].Name == conn.Name {
 			c.Connections[i] = conn
-			return nil
+			return c.Persist()
 		}
 	}
 	c.Connections = append(c.Connections, conn)
