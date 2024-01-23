@@ -12,3 +12,5 @@ charts/argo-zombies/values.test.yaml
 .vscode/settings.json
 
 internal/metadata/metadata.json
+
+.env

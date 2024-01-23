@@ -8,3 +8,9 @@ tasks:
   metadata:
     cmds:
       - ./hack/generate_metadata.py > internal/metadata/metadata.json
+
+  version:
+    dotenv:
+      - .env
+    cmds:
+      - semantic-release --no-ci --dry-run
