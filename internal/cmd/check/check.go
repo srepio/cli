@@ -15,7 +15,7 @@ func NewCheckCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "check",
 		Short:   "Check the active scenario",
-		GroupID: "srep",
+		GroupID: "play",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			active, err := common.Client().GetActivePlay(cmd.Context(), &client.GetActivePlayRequest{})
 			if err != nil {

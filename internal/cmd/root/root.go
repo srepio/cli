@@ -9,6 +9,8 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/srepio/cli/internal/cmd/auth/ctx"
+	"github.com/srepio/cli/internal/cmd/auth/login"
 	"github.com/srepio/cli/internal/cmd/cancel"
 	"github.com/srepio/cli/internal/cmd/check"
 	"github.com/srepio/cli/internal/cmd/common"
@@ -18,10 +20,6 @@ import (
 	"github.com/srepio/cli/internal/cmd/run"
 	"github.com/srepio/cli/internal/cmd/shell"
 	"github.com/srepio/cli/internal/config"
-)
-
-var (
-	Config *config.Config
 )
 
 func BuildRootCmd(version, commit, date string) *cobra.Command {
@@ -39,7 +37,7 @@ func BuildRootCmd(version, commit, date string) *cobra.Command {
 				}
 				return err
 			}
-			Config = c
+			common.Config = c
 			common.InitClient(c)
 			return nil
 		},
@@ -47,7 +45,8 @@ func BuildRootCmd(version, commit, date string) *cobra.Command {
 
 	cmd.SetVersionTemplate(fmt.Sprintf("%s version %s commit %s built at %s\n", cmd.Use, version, commit, date))
 
-	cmd.AddGroup(&cobra.Group{ID: "srep", Title: "SREP commands:"})
+	cmd.AddGroup(&cobra.Group{ID: "play", Title: "Play commands:"})
+	cmd.AddGroup(&cobra.Group{ID: "auth", Title: "Auth commands:"})
 	cmd.AddGroup(&cobra.Group{ID: "other", Title: "Other commands:"})
 
 	cmd.SetHelpCommandGroupID("other")
@@ -60,6 +59,9 @@ func BuildRootCmd(version, commit, date string) *cobra.Command {
 	cmd.AddCommand(cancel.NewCancelCommand())
 	cmd.AddCommand(initialise.NewInitCommand())
 	cmd.AddCommand(shell.NewShellCommand())
+
+	cmd.AddCommand(login.NewLoginCommand())
+	cmd.AddCommand(ctx.NewCtxCommand())
 
 	return cmd
 }
