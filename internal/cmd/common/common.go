@@ -9,7 +9,8 @@ import (
 )
 
 var (
-	srep *client.Client
+	srep   *client.Client
+	Config *config.Config
 )
 
 func ScenarioFlags(cmd *cobra.Command) {

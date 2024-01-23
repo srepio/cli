@@ -15,7 +15,7 @@ func NewRunCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:       "run [scenario]",
 		Short:     "Start a new play",
-		GroupID:   "srep",
+		GroupID:   "play",
 		Args:      cobra.ExactArgs(1),
 		ValidArgs: common.ScenarioCompletion(),
 		RunE: func(cmd *cobra.Command, args []string) error {

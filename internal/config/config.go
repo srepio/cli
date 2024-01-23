@@ -118,3 +118,34 @@ func (c *Config) GetCurrentConnection() Api {
 	}
 	return Api{}
 }
+
+func (c *Config) SetConnection(conn Api) error {
+	// Check if we should overwrite an existing context first
+	for i := range c.Connections {
+		if c.Connections[i].Name == conn.Name {
+			c.Connections[i] = conn
+			return nil
+		}
+	}
+	c.Connections = append(c.Connections, conn)
+	return c.Persist()
+}
+
+func (c *Config) SetContext(name string) error {
+	for _, conn := range c.Connections {
+		if conn.Name == name {
+			c.CurrentConnection = name
+			return c.Persist()
+		}
+	}
+	return errors.New("unknown connection name")
+}
+
+// Persist the current config
+func (c *Config) Persist() error {
+	data, err := yaml.Marshal(c)
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(getPath(), data, 0600)
+}

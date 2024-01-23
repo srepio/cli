@@ -14,7 +14,7 @@ func NewListCommand() *cobra.Command {
 	return &cobra.Command{
 		Use:     "list",
 		Short:   "List the available practice scenarios",
-		GroupID: "srep",
+		GroupID: "play",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			md, err := common.Client().GetScenarios(cmd.Context(), &client.GetScenariosRequest{})
 			if err != nil {

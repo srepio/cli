@@ -14,3 +14,4 @@ charts/argo-zombies/values.test.yaml
 internal/metadata/metadata.json
 
 .env
+.srep.yaml

@@ -15,7 +15,7 @@ func NewCancelCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "cancel",
 		Short:   "Cancel the active play",
-		GroupID: "srep",
+		GroupID: "play",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			active, err := common.Client().GetActivePlay(cmd.Context(), &client.GetActivePlayRequest{})
 			if err != nil {
