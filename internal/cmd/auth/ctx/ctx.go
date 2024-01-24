@@ -19,7 +19,7 @@ func NewCtxCommand() *cobra.Command {
 			for _, conn := range common.Config.Connections {
 				ctxs = append(ctxs, conn.Name)
 			}
-			ctx, err := prompt.New().Choose(ctxs)
+			ctx, err := prompt.New().Ask("Choose your connection").Choose(ctxs)
 			if err != nil {
 				return err
 			}
