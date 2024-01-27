@@ -43,7 +43,7 @@ func NewRunCommand() *cobra.Command {
 				return err
 			}
 
-			return common.RunShell(play.ID)
+			return common.RunShell(play.Play.ID)
 		},
 	}
 
