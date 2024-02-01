@@ -15,13 +15,19 @@ func NewCtxCommand() *cobra.Command {
 		Short:   "Update the connection that SREP CLI uses",
 		GroupID: "auth",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			ctxs := []string{}
-			for _, conn := range common.Config.Connections {
-				ctxs = append(ctxs, conn.Name)
-			}
-			ctx, err := prompt.New().Ask("Choose your connection").Choose(ctxs)
-			if err != nil {
-				return err
+			var ctx string
+			if len(args) == 1 {
+				ctx = args[0]
+			} else {
+				ctxs := []string{}
+				for _, conn := range common.Config.Connections {
+					ctxs = append(ctxs, conn.Name)
+				}
+				var err error
+				ctx, err = prompt.New().Ask("Choose your connection").Choose(ctxs)
+				if err != nil {
+					return err
+				}
 			}
 
 			return common.Config.SetContext(ctx)
