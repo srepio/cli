@@ -7,14 +7,13 @@ require (
 	github.com/fatih/color v1.16.0
 	github.com/rodaine/table v1.1.1
 	github.com/spf13/cobra v1.8.0
-	github.com/srepio/sdk v0.2.1
+	github.com/srepio/sdk v0.5.4
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/term v0.17.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
-	github.com/asaskevich/govalidator v0.0.0-20200108200545-475eaeb16496 // indirect
 	github.com/atotto/clipboard v0.1.4 // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/charmbracelet/bubbles v0.16.1 // indirect
