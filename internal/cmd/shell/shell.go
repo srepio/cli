@@ -26,7 +26,7 @@ func NewShellCommand() *cobra.Command {
 				return errors.New("no active play running")
 			}
 
-			return common.RunShell(active.Play.ID)
+			return common.RunShell(cmd.Context(), active.Play.ID)
 		},
 	}
 
