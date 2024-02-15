@@ -10,14 +10,13 @@ import (
 	"golang.org/x/term"
 )
 
-func RunShell(play string) error {
+func RunShell(ctx context.Context, play string) error {
 	oldState, tErr := term.MakeRaw(int(os.Stdin.Fd()))
 	if tErr != nil {
 		return tErr
 	}
 	defer term.Restore(int(os.Stdin.Fd()), oldState)
 
-	ctx := context.Background()
 	req := &client.GetShellRequest{
 		ID: play,
 	}

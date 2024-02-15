@@ -4,9 +4,12 @@ Copyright © 2023 Henry Whitaker <henrywhitaker3@outlook.com>
 package root
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/spf13/cobra"
 	"github.com/srepio/cli/internal/cmd/auth/ctx"
@@ -39,6 +42,18 @@ func BuildRootCmd(version, commit, date string) *cobra.Command {
 			}
 			common.Config = c
 			common.InitClient(c)
+
+			ctx, cancel := context.WithCancel(cmd.Context())
+			cmd.SetContext(ctx)
+
+			sigs := make(chan os.Signal, 1)
+			signal.Notify(sigs, syscall.SIGTERM, syscall.SIGINT)
+
+			go func() {
+				<-sigs
+				cancel()
+			}()
+
 			return nil
 		},
 	}
