@@ -8,7 +8,7 @@ require (
 	github.com/rodaine/table v1.1.1
 	github.com/spf13/cobra v1.8.0
 	github.com/srepio/sdk v0.5.4
-	github.com/stretchr/testify v1.8.4
+	github.com/stretchr/testify v1.9.0
 	golang.org/x/term v0.17.0
 	gopkg.in/yaml.v3 v3.0.1
 )
