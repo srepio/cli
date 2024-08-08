@@ -6,7 +6,7 @@ require (
 	github.com/cqroot/prompt v0.9.3
 	github.com/fatih/color v1.16.0
 	github.com/rodaine/table v1.1.1
-	github.com/spf13/cobra v1.8.0
+	github.com/spf13/cobra v1.8.1
 	github.com/srepio/sdk v0.5.4
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/term v0.17.0
