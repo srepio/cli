@@ -4,7 +4,7 @@ go 1.22.0
 
 require (
 	github.com/cqroot/prompt v0.9.3
-	github.com/fatih/color v1.16.0
+	github.com/fatih/color v1.18.0
 	github.com/rodaine/table v1.1.1
 	github.com/spf13/cobra v1.8.0
 	github.com/srepio/sdk v0.5.4
@@ -40,6 +40,6 @@ require (
 	golang.org/x/crypto v0.18.0 // indirect
 	golang.org/x/net v0.17.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
-	golang.org/x/sys v0.17.0 // indirect
+	golang.org/x/sys v0.25.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 )
