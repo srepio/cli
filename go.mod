@@ -6,7 +6,7 @@ require (
 	github.com/cqroot/prompt v0.9.3
 	github.com/fatih/color v1.16.0
 	github.com/rodaine/table v1.1.1
-	github.com/spf13/cobra v1.8.0
+	github.com/spf13/cobra v1.10.2
 	github.com/srepio/sdk v0.5.4
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/term v0.17.0
@@ -36,7 +36,7 @@ require (
 	github.com/muesli/termenv v0.15.2 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
-	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/spf13/pflag v1.0.9 // indirect
 	golang.org/x/crypto v0.18.0 // indirect
 	golang.org/x/net v0.17.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
